@@ -40,7 +40,26 @@ class PairFinder(inputFile: String, outputFile: String) {
 
   // Finds all unique pairs that sum to a target value (12 in this case)
   private def findPairsWithSum(numbers: List[Int], targetSum: Int): List[(Int, Int)] = {
+    val countMap = scala.collection.mutable.Map[Int, Int]()
+    numbers.foreach(num => countMap(num) = countMap.getOrElse(num, 0) + 1) // Count occurrences
+
     val result = scala.collection.mutable.ListBuffer[(Int, Int)]()
+
+    for (num <- numbers) {
+      val complement = targetSum - num
+
+      // Check if both number and its complement are available for pairing
+      if (countMap.getOrElse(num, 0) > 0 && countMap.getOrElse(complement, 0) > 0) {
+        // Ensure valid pairing for distinct or the same number used twice
+        if (num != complement || countMap(num) > 1) {
+          // Add pair (sorted for consistency)
+          result.append((Math.min(num, complement), Math.max(num, complement)))
+          countMap(num) -= 1
+          countMap(complement) -= 1
+        }
+      }
+    }
+
     result.toList
   }
 
