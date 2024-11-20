@@ -1,6 +1,7 @@
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfter
-import java.io._
+import java.io.File
+import java.io.PrintWriter
 import scala.util.Using // For safely handling file reading and writing
 
 // Test suite for PairFinder

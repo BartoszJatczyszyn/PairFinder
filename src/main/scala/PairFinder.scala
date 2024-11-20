@@ -1,6 +1,7 @@
 import scala.io.Source
 import scala.util.Using // For safely handling file reading and writing
-import java.io._
+import java.io.File
+import java.io.PrintWriter
 
 // Class to find pairs from an input file and write them to an output file
 class PairFinder(inputFile: String, outputFile: String) {
