@@ -38,4 +38,16 @@ class PairFinderTest extends AnyFunSuite with BeforeAndAfter {
       fail(s"Failed to read the output file: $outputFile")
     }
   }
+
+  // Helper method to normalize pairs by removing brackets and sorting
+  def normalizePairs(pairs: List[String]): Set[Set[Int]] = {
+    pairs.map { line =>
+      val pair = line
+        .replaceAll("[\\[\\]]", "") // Remove square brackets
+        .split(",") // Split by comma
+        .map(_.trim.toInt) // Convert to integers
+        .toSet // Convert pair to a set
+      pair
+    }.toSet // Convert the list of pairs to a set of sets
+  }
 }
