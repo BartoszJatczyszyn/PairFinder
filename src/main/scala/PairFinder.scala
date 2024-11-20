@@ -1,3 +1,6 @@
+import scala.io.Source
+import scala.util.Using // For safely handling file reading and writing
+
 // Class to find pairs from an input file and write them to an output file
 class PairFinder(inputFile: String, outputFile: String) {
 
@@ -10,7 +13,28 @@ class PairFinder(inputFile: String, outputFile: String) {
 
   // Reads numbers from the input file, filters out negatives, and returns them as a list
   private def readNumbers(): List[Int] = {
-      List()
+    Using(Source.fromFile(inputFile)) { source =>
+      source.getLines()
+        .flatMap(_.split("[,\\s]+")) // Split by commas, spaces, or newlines
+        .flatMap { token =>
+          try {
+            val number = token.trim.toInt
+            if (number >= 0) Some(number) // Only include non-negative numbers
+            else {
+              println(s"Warning: Skipping negative number '$number' in the input file.")
+              None
+            }
+          } catch {
+            case _: NumberFormatException =>
+              println(s"Warning: Skipping invalid entry '$token' in the input file.")
+              None
+          }
+        }
+        .toList
+    }.getOrElse {
+      println(s"Error reading from file $inputFile")
+      List() // Return empty list on error
+    }
   }
 
   // Finds all unique pairs that sum to a target value (12 in this case)
