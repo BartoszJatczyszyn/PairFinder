@@ -1,6 +1,7 @@
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.BeforeAndAfter
 import java.io._
+import scala.util.Using // For safely handling file reading and writing
 
 // Test suite for PairFinder
 class PairFinderTest extends AnyFunSuite with BeforeAndAfter {
@@ -18,5 +19,14 @@ class PairFinderTest extends AnyFunSuite with BeforeAndAfter {
   after {
     new File(inputFile).delete()
     new File(outputFile).delete()
+  }
+
+  // Helper method to write content to the input file
+  def setupInputFile(content: String): Unit = {
+    Using(new PrintWriter(inputFile)) { writer =>
+      writer.write(content)
+    }.getOrElse {
+      fail(s"Failed to create the input file: $inputFile")
+    }
   }
 }
