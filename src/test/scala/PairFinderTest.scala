@@ -29,4 +29,13 @@ class PairFinderTest extends AnyFunSuite with BeforeAndAfter {
       fail(s"Failed to create the input file: $inputFile")
     }
   }
+
+  // Helper method to read and return the content of the output file
+  def readOutputFile(): List[String] = {
+    Using(scala.io.Source.fromFile(outputFile)) { source =>
+      source.getLines().toList
+    }.getOrElse {
+      fail(s"Failed to read the output file: $outputFile")
+    }
+  }
 }
