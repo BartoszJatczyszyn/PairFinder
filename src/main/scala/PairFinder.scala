@@ -1,5 +1,6 @@
 import scala.io.Source
 import scala.util.Using // For safely handling file reading and writing
+import java.io._
 
 // Class to find pairs from an input file and write them to an output file
 class PairFinder(inputFile: String, outputFile: String) {
@@ -45,6 +46,11 @@ class PairFinder(inputFile: String, outputFile: String) {
 
   // Writes the found pairs to the output file
   private def writePairs(pairs: List[(Int, Int)]): Unit = {
+    Using(new PrintWriter(new File(outputFile))) { writer =>
+      pairs.foreach { case (a, b) => writer.println(s"[$a, $b]") } // Format pair as [a, b]
+    }.recover {
+      case ex: Exception => println(s"Error while writing to file: ${ex.getMessage}")
+    }
   }
 }
 
